@@ -283,6 +283,7 @@ is_excluded (MaximusApp *app, WnckWindow *window)
   gchar *res_name;
   gchar *class_name;
   gint i;
+  gint height, client_height;
 
   g_return_val_if_fail (MAXIMUS_IS_APP (app), TRUE);
   g_return_val_if_fail (WNCK_IS_WINDOW (window), TRUE);
@@ -298,8 +299,18 @@ is_excluded (MaximusApp *app, WnckWindow *window)
   /* Ignore if the window is already fullscreen */
   if (wnck_window_is_fullscreen (window))
   {
-    g_debug ("Excluding (is fullscreen): %s\n",wnck_window_get_name (window));
+    g_debug ("Excluding (is fullscreen): %s\n", wnck_window_get_name (window));
     return TRUE;
+  }
+
+  /* Ignroe if window has client side decorations */
+  wnck_window_get_client_window_geometry (window, NULL, NULL, NULL, &client_height);
+  wnck_window_get_geometry (window, NULL, NULL, NULL, &height);
+
+  if (height == client_height) 
+  {
+    g_debug ( "Excluding (has client-side decorations): %s\n", wnck_window_get_name(window));
+    return True;
   }
   
   /* Make sure the window supports maximising */
