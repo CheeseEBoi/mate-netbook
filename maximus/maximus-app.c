@@ -309,6 +309,7 @@ is_excluded (MaximusApp *app, WnckWindow *window)
 
   if (height == client_height) 
   {
+    g_debug ("Height: %s\nClient Height: %s\n", height, client_height);
     g_debug ("Excluding (has client-side decorations): %s\n", wnck_window_get_name(window));
     return TRUE;
   }
